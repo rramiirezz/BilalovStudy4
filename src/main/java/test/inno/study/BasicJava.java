@@ -65,7 +65,7 @@ public class BasicJava {
     строк и возвращает true, если хотя бы одна строка в массиве равна Bug. Сравнение можно выполнять без учёта регистра.*/
     public static boolean hasBug(String[] messages){
         for (String word : messages){
-            if (word.toLowerCase().contains("Bug")){
+            if (word.contains("Bug")){
                 return true;
             }
         }
