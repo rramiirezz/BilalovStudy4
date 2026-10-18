@@ -18,8 +18,9 @@ public class SecondExampleTests {
     void isEvenTest(){
         int randomNumber = random.nextInt(101);
         boolean result = BasicJava.isEven(randomNumber);
+        boolean expected = randomNumber % 2 == 0;
         System.out.println("isEven(" + randomNumber + ") = " + result);
-        if (result){
+        if (result == expected){
             System.out.println("TEST PASSED");
         } else {
             System.out.println("TEST FAILED");
@@ -30,8 +31,9 @@ public class SecondExampleTests {
     void checkAccessTest(){
         int randomAge = random.nextInt(101);
         String result = BasicJava.checkAccess(randomAge);
+        String expected = randomAge > 18 ? "Allowed" : "Denied";
         System.out.println("checkAccess(" + randomAge + ") = " + result);
-        if ("allowed".equals(result)){
+        if (result.equals(expected)){
             System.out.println("TEST PASSED");
         } else {
             System.out.println("TEST FAILED");
@@ -42,8 +44,9 @@ public class SecondExampleTests {
     void isPositiveTest(){
         int randomNumber = random.nextInt(201) - 100;
         boolean result = BasicJava.isPositive(randomNumber);
+        boolean expected = randomNumber > 0;
         System.out.println("isPositive(" + randomNumber+ ") = " + result);
-        if (result){
+        if (result == expected){
             System.out.println("TEST PASSED");
         } else {
             System.out.println("TEST FAILED");
@@ -68,8 +71,23 @@ public class SecondExampleTests {
     void getGradeTest(){
         int randomPoint = random.nextInt(101);
         String result = BasicJava.getGrade(randomPoint);
+        String expected;
+
+        if (randomPoint < 0 || randomPoint > 100) {
+            expected = "Error";
+        } else if (randomPoint <= 20) {
+            expected = "E";
+        } else if (randomPoint <= 40) {
+            expected = "D";
+        } else if (randomPoint <= 60) {
+            expected = "C";
+        } else if (randomPoint <= 80) {
+            expected = "B";
+        } else {
+            expected = "A";
+        }
         System.out.println("getGrade(" + randomPoint + ") = " + result);
-        if (result.equals("A") || result.equals("B")){
+        if (result.equals(expected)){
             System.out.println("TEST PASSED");
         } else {
             System.out.println("TEST FAILED");
@@ -80,8 +98,9 @@ public class SecondExampleTests {
     void sumTonTest(){
         int randomNumber = random.nextInt(10);
         int result = BasicJava.sumToN(randomNumber);
+        int expected = randomNumber * (randomNumber + 1) / 2;
         System.out.println("sumToN(" + randomNumber + ") = " + result);
-        if (result == randomNumber * (randomNumber + 1)/2){
+        if (result == expected){
             System.out.println("TEST PASSED");
         } else {
             System.out.println("TEST FAILED");
@@ -95,7 +114,10 @@ public class SecondExampleTests {
                 .boxed()
                 .toList();
         double result = BasicJava.calcAverage(randomList);
-        int expected = (int) (randomList.stream().mapToInt(Integer::intValue).sum() / randomList.size());
+        double expected = randomList.stream()
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElse(0.0);
         System.out.println("calcAverage(" + randomList + ") = " + result);
         if (result == expected) {
             System.out.println("TEST PASSED");
@@ -127,15 +149,15 @@ public class SecondExampleTests {
 
     @ParameterizedTest
     @CsvSource({
-            "There is a bug in the login module",
-            "System is running smoothly",
-            "Bug detected in database connection",
-            "All tests passed successfully",
-            "Critical bug found in API endpoint",
-            "No issues detected during execution",
-            "Performance is optimal, no bugs"
+            "There is a bug in the login module, false",
+            "System is running smoothly, false",
+            "Bug detected in database connection, true",
+            "All tests passed successfully, false",
+            "Critical bug found in API endpoint, false",
+            "No issues detected during execution, false",
+            "Performance is optimal no bugs, false"
     })
-    void hasBugTest(String text) {
+    void hasBugTest(String text, boolean expected) {
         boolean result = BasicJava.hasBug(new String[]{text});
         System.out.print("hasBug(\"" + Arrays.toString(new String[]{text}) + "\") = " + result + " - ");
         if (result) {
@@ -149,7 +171,7 @@ public class SecondExampleTests {
     @CsvSource({
             "1, 1 Поехали!",
             "3, 3 2 1 Поехали!",
-            "5, 4 4 3 2 1 Поехали!"
+            "5, 5 4 3 2 1 Поехали!"
     })
     void blastOffTest(int start, String expected){
         String result = BasicJava.blastOff(start);
@@ -165,7 +187,7 @@ public class SecondExampleTests {
     @CsvSource({
             "0, 10,0 2 4 6 8 10",
             "2, 2,2",
-            "-4, 4,-4,-2 0 3",
+            "-4, 4,-4 -2 0 2 4",
             "7, 9,8",
     })
     void getEvenInRangeTest(int start, int end, String expected){
@@ -193,7 +215,7 @@ public class SecondExampleTests {
     static Stream<Arguments> reverseArrayTestData() {
         return Stream.of(
                 Arguments.of(new String[]{"One", "Two", "Zero"}, new String[]{"Zero", "Two", "One"}),
-                Arguments.of(new String[]{"Hello", "World"}, new String[]{"Hello", "World"})
+                Arguments.of(new String[]{"Hello", "World"}, new String[]{"World", "Hello"})
         );
     }
 }
