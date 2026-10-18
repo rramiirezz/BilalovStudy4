@@ -13,7 +13,7 @@ public class BasicJava {
     /* Задача 2: разработать метод с сигнатурой public static String checkAccess(int age).
     Метод возвращает Allowed, если число строго больше 18, и Denied — если меньше.*/
     public static String checkAccess(int age){
-        return age < 18 ? "Allowed" : "Denied";
+        return age > 18 ? "Allowed" : "Denied";
     }
 
     /* Задача 3: разработать метод с сигнатурой public static boolean isPositive(int n).
@@ -65,7 +65,7 @@ public class BasicJava {
     строк и возвращает true, если хотя бы одна строка в массиве равна Bug. Сравнение можно выполнять без учёта регистра.*/
     public static boolean hasBug(String[] messages){
         for (String word : messages){
-            if (word.toLowerCase().contains("bug")){
+            if (word.toLowerCase().contains("Bug")){
                 return true;
             }
         }
@@ -77,9 +77,15 @@ public class BasicJava {
     разделённых пробелом. Перед первым и после последнего числа пробел не ставится. Например: (2, 5) -> “2 4”*/
     public static String getEvenInRange(int start, int end){
         StringBuilder result = new StringBuilder();
-        for (int i = start; i <= end; i++){
-            if (i % 2 == 0){
-                result.append(i).append(" ");}
+        boolean first = true;
+        for (int i = start; i <= end; i++) {
+            if (i % 2 == 0) {
+                if (!first) {
+                    result.append(" ");
+                }
+                result.append(i);
+                first = false;
+            }
         }
         return result.toString();
     }
@@ -112,11 +118,11 @@ public class BasicJava {
 
     /* Задача 11: разработать метод с сигнатурой public static calcAverage(List<Integer> list).
     Метод вычисляет и возвращает среднее арифметическое всех чисел в списке.*/
-    public static int calcAverage(List<Integer> list){
+    public static double calcAverage(List<Integer> list){
         if (list.isEmpty()){
             return 0;
         }
-        int sum = list.stream()
+        double sum = list.stream()
                 .mapToInt(Integer::intValue)
                 .sum();
         return sum / list.size();
