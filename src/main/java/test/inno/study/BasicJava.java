@@ -1,5 +1,6 @@
 package test.inno.study;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BasicJava {
@@ -134,5 +135,13 @@ public class BasicJava {
         return list.stream()
                 .filter(name -> !name.equals(nameToRemove))
                 .toList();
+    }
+
+    public static List<Integer> generateSequence(int n) {
+        List<Integer> sequence = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            sequence.add(i);
+        }
+        return sequence;
     }
 }

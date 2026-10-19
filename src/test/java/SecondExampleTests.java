@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -9,62 +10,56 @@ import test.inno.study.BasicJava;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class SecondExampleTests {
 
     private static final Random random = new Random();
     private static final List<String> NAMES = Arrays.asList("Анна", "Борис", "Виктор", "Иван", "Мария", "Петр", "Ольга");
 
-    @RepeatedTest(3)
+    @Tag("replay")
+    @RepeatedTest(10)
     void isEvenTest(){
         int randomNumber = random.nextInt(101);
         boolean result = BasicJava.isEven(randomNumber);
         boolean expected = randomNumber % 2 == 0;
-        System.out.println("isEven(" + randomNumber + ") = " + result);
-        if (result == expected){
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + "; полученное значение: " + result + " для числа: " + randomNumber);
     }
 
-    @RepeatedTest(4)
+    @Tag("replay")
+    @RepeatedTest(10)
     void checkAccessTest(){
         int randomAge = random.nextInt(101);
         String result = BasicJava.checkAccess(randomAge);
-        String expected = randomAge > 18 ? "Allowed" : "Denied";
-        System.out.println("checkAccess(" + randomAge + ") = " + result);
-        if (result.equals(expected)){
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        String expected = randomAge >= 18 ? "Allowed" : "Denied";
+
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + ", полученное значение: " + result + " для возраста " + randomAge);
     }
 
-    @RepeatedTest(8)
+    @Tag("replay")
+    @RepeatedTest(10)
     void isPositiveTest(){
         int randomNumber = random.nextInt(201) - 100;
         boolean result = BasicJava.isPositive(randomNumber);
         boolean expected = randomNumber > 0;
-        System.out.println("isPositive(" + randomNumber+ ") = " + result);
-        if (result == expected){
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + ", полученное значение: " + result + " для числа " + randomNumber);
     }
 
-    @RepeatedTest(6)
+    @Tag("replay")
+    @RepeatedTest(10)
     void findMaxTest() {
         int[] randomArray = random.ints(5, -100, 101).toArray();
         int expected = Arrays.stream(randomArray).max().getAsInt();
         int result = BasicJava.findMax(randomArray);
 
-        System.out.println("findMax" + Arrays.toString(randomArray) + ") = " + result);
-        if (result == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + ", полученное значение: " + result + " для массива: " + Arrays.toString(randomArray));
     }
 
     @Test
@@ -86,12 +81,9 @@ public class SecondExampleTests {
         } else {
             expected = "A";
         }
-        System.out.println("getGrade(" + randomPoint + ") = " + result);
-        if (result.equals(expected)){
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + ", полученное значение: " + result + " для баллов " + randomPoint);
     }
 
     @Test
@@ -99,12 +91,9 @@ public class SecondExampleTests {
         int randomNumber = random.nextInt(10);
         int result = BasicJava.sumToN(randomNumber);
         int expected = randomNumber * (randomNumber + 1) / 2;
-        System.out.println("sumToN(" + randomNumber + ") = " + result);
-        if (result == expected){
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + ", полученное значение: " + result + " для n = " + randomNumber);
     }
 
     @Test
@@ -118,12 +107,9 @@ public class SecondExampleTests {
                 .mapToInt(Integer::intValue)
                 .average()
                 .orElse(0.0);
-        System.out.println("calcAverage(" + randomList + ") = " + result);
-        if (result == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+
+        assertEquals(expected, result, 0.001,
+                "Ожидаемое значение: " + expected + "; полученное значение: " + result + " для списка: " + randomList);
     }
 
     @Test
@@ -139,12 +125,8 @@ public class SecondExampleTests {
 
         List<String> result = BasicJava.removeSpecificName(inputList, nameToRemove);
 
-        System.out.println("removeSpecificName(" + inputList + ", \"" + nameToRemove + "\") = " + result);
-        if (result.equals(expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + "; полученное значение: " + result + " для списка: " + inputList);
     }
 
     @ParameterizedTest
@@ -159,13 +141,10 @@ public class SecondExampleTests {
     })
     void hasBugTest(String text, boolean expected) {
         boolean result = BasicJava.hasBug(new String[]{text});
-        System.out.print("hasBug(\"" + Arrays.toString(new String[]{text}) + "\") = " + result + " - ");
-        if (result) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + "; полученное значение: " + result + " для текста: \"" + text + "\"");
     }
+
 
     @ParameterizedTest
     @CsvSource({
@@ -175,12 +154,9 @@ public class SecondExampleTests {
     })
     void blastOffTest(int start, String expected){
         String result = BasicJava.blastOff(start);
-        System.out.println("blastOff(" + start + ") = " + result);
-        if (result.equals(expected)){
-            System.out.println("TEST PASSED");
-        } else{
-            System.out.println("TEST FAILED");
-        }
+
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + "; полученное значение: " + result + " для строки: " + result);
     }
 
     @ParameterizedTest
@@ -192,24 +168,18 @@ public class SecondExampleTests {
     })
     void getEvenInRangeTest(int start, int end, String expected){
         String result = BasicJava.getEvenInRange(start,end);
-        System.out.println("getEvenInRange(" + start + ";" + end +") = " + result);
-        if (result.equals(expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+
+        assertEquals(expected, result,
+                "Ожидаемое значение: " + expected + "; полученное значение: " + result + " для строки: " + result);
     }
 
     @ParameterizedTest
     @MethodSource("reverseArrayTestData")
     void reverseTest(String[] input, String[] expected) {
         String[] result = BasicJava.reverse(input);
-        System.out.println("reverse(" + Arrays.toString(input) + ") = " + Arrays.toString(result));
-        if (Arrays.equals(result, expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+
+        assertArrayEquals(expected, result,
+                "Ожидаемое значение: " + Arrays.toString(expected) + "; полученное значение: " + Arrays.toString(result));
     }
 
     static Stream<Arguments> reverseArrayTestData() {

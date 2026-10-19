@@ -17,7 +17,9 @@ dependencies {
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        includeTags("replay")
+    }
 }
 
 tasks.register<Test>("printTestRunOver") {
